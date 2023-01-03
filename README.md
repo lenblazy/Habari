@@ -12,9 +12,10 @@ An Android Application that can be used to as a news application. The data is ma
 - MVVM Architecture
 - Retrofit(Remote data source)
 - Room(Local data source)
+- [GSON](https://github.com/google/gson)
 - Dagger Hilt(Dependency Injection)
 - RecyclerView with DiffUtil
-- Kotlin Coroutines(Background processing)
+- [Kotlin Coroutines/Flow](https://github.com/Kotlin/kotlinx.coroutines)
 - Kotlin Flows
 - Kotlin Jetpack Libraries
 - Secure keys securely
@@ -23,3 +24,6 @@ An Android Application that can be used to as a news application. The data is ma
   - [Truth](https://truth.dev/)
   - [Mockito](https://developer.android.com/training/testing/local-tests)
   - [MockWebserver](https://github.com/square/okhttp/tree/master/mockwebserver)
+
+## Boiler-plate code
+- API Resource class [here]()
