@@ -27,4 +27,4 @@ An Android Application that can be used to as a news application. The data is ma
   - [MockWebserver](https://github.com/square/okhttp/tree/master/mockwebserver)
 
 ## Boiler-plate code
-- API Resource class [here]()
+- API Resource class [here](https://github.com/lenblazy/Habari/blob/main/app/src/main/java/com/lenibonje/habari/data/util/Resource.kt)
