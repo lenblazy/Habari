@@ -15,6 +15,7 @@ An Android Application that can be used to as a news application. The data is ma
 - [GSON](https://github.com/google/gson)
 - Dagger Hilt(Dependency Injection)
 - RecyclerView with DiffUtil
+- [Secrets Gradle Plugin](https://developers.google.com/maps/documentation/places/android-sdk/secrets-gradle-plugin)
 - [Kotlin Coroutines/Flow](https://github.com/Kotlin/kotlinx.coroutines)
 - Kotlin Flows
 - Kotlin Jetpack Libraries
