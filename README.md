@@ -10,7 +10,7 @@ An Android Application that can be used to as a news application. The data is ma
 
 ## How it's built
 - MVVM Architecture
-- Retrofit(Remote data source)
+- [Retrofit](https://square.github.io/retrofit/) - Remote data source
 - Room(Local data source)
 - [GSON](https://github.com/google/gson)
 - Dagger Hilt(Dependency Injection)

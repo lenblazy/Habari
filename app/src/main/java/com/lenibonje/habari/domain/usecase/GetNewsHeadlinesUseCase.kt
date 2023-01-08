@@ -6,6 +6,7 @@ import com.lenibonje.habari.domain.repository.NewsRepository
 
 class GetNewsHeadlinesUseCase(private val newsRepository: NewsRepository) {
 
-    suspend fun execute(): Resource<ApiResponse> = newsRepository.getNewsHeadlines()
+    suspend fun execute(country: String, page: Int): Resource<ApiResponse>
+        = newsRepository.getNewsHeadlines(country, page)
 
 }
