@@ -6,9 +6,7 @@ import com.lenibonje.habari.data.repository.datasource.NewsRemoteDatasource
 import retrofit2.Response
 
 class NewsRemoteDatasourceImpl(
-    private val newsApiService: NewsApiService,
-    private val country: String,
-    private val page: Int,
+    private val newsApiService: NewsApiService
 ) : NewsRemoteDatasource {
 
     override suspend fun getTopHeadLines(country: String, page: Int): Response<ApiResponse> {
