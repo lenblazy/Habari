@@ -20,6 +20,7 @@ An Android Application that can be used to as a news application. The data is ma
 - Kotlin Flows
 - Kotlin Jetpack Libraries
 - Secure keys securely
+- [Glide](https://github.com/bumptech/glide)
 - Unit Testing
   - [JUnit](https://developer.android.com/training/testing/local-tests)
   - [Truth](https://truth.dev/)
