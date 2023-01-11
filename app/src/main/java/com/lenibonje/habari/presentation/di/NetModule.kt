@@ -18,7 +18,7 @@ class NetModule {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("")
+            .baseUrl("https://newsapi.org/v2/")
             .build()
 
     }

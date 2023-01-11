@@ -14,7 +14,7 @@ interface NewsApiService {
         @Query("page")
         page: Int,
         @Query("apiKey")
-        apiKey: String = "a",
+        apiKey: String = "da18f6f7abae4139b8c88f5b0d17b73e",
     ): Response<ApiResponse>
 
 }
