@@ -9,9 +9,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.lenibonje.habari.data.model.ApiResponse
+import com.lenibonje.habari.data.model.Article
 import com.lenibonje.habari.data.util.Resource
 import com.lenibonje.habari.domain.usecase.GetNewsHeadlinesUseCase
 import com.lenibonje.habari.domain.usecase.GetSearchedNewsUseCase
+import com.lenibonje.habari.domain.usecase.SaveNewsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -19,6 +21,7 @@ class NewsViewModel(
     private val app: Application,
     private val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
     private val getSearchedNewsUseCase: GetSearchedNewsUseCase,
+    private val saveNewsUseCase: SaveNewsUseCase
     ): AndroidViewModel(app) {
 
     val newsHeadLines: MutableLiveData<Resource<ApiResponse>> = MutableLiveData()
@@ -87,6 +90,11 @@ class NewsViewModel(
             }
         }
         return result
+    }
+
+    //local database
+    fun saveArticle(article: Article) = viewModelScope.launch {
+
     }
 
 }

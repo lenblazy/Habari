@@ -14,7 +14,6 @@ import com.lenibonje.habari.R
  */
 class SavedFragment : Fragment() {
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

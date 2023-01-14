@@ -1,6 +1,7 @@
 package com.lenibonje.habari.presentation.di
 
 import com.lenibonje.habari.data.repository.NewsRepositoryImpl
+import com.lenibonje.habari.data.repository.datasource.NewsLocalDatasource
 import com.lenibonje.habari.data.repository.datasource.NewsRemoteDatasource
 import com.lenibonje.habari.domain.repository.NewsRepository
 import dagger.Module
@@ -16,9 +17,10 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun provideNewsRepository(
-        newsRemoteDatasource: NewsRemoteDatasource
+        newsRemoteDatasource: NewsRemoteDatasource,
+        localDatasource: NewsLocalDatasource
     ): NewsRepository {
-        return NewsRepositoryImpl(newsRemoteDatasource)
+        return NewsRepositoryImpl(newsRemoteDatasource, localDatasource)
     }
 
 }

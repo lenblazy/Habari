@@ -2,6 +2,7 @@ package com.lenibonje.habari.data.repository
 
 import com.lenibonje.habari.data.model.ApiResponse
 import com.lenibonje.habari.data.model.Article
+import com.lenibonje.habari.data.repository.datasource.NewsLocalDatasource
 import com.lenibonje.habari.data.repository.datasource.NewsRemoteDatasource
 import com.lenibonje.habari.data.util.Resource
 import com.lenibonje.habari.domain.repository.NewsRepository
@@ -9,7 +10,8 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 class NewsRepositoryImpl(
-    private val newsRemoteDatasource: NewsRemoteDatasource
+    private val newsRemoteDatasource: NewsRemoteDatasource,
+    private val newsLocalDatasource: NewsLocalDatasource
 ): NewsRepository {
 
     private fun responseToResource(response: Response<ApiResponse>): Resource<ApiResponse>{
@@ -35,7 +37,7 @@ class NewsRepositoryImpl(
     }
 
     override suspend fun saveNews(article: Article) {
-        TODO("Not yet implemented")
+        newsLocalDatasource.saveArticleToDB(article)
     }
 
     override suspend fun deleteNews(article: Article) {
