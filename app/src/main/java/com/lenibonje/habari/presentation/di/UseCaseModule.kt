@@ -2,6 +2,7 @@ package com.lenibonje.habari.presentation.di
 
 import com.lenibonje.habari.domain.repository.NewsRepository
 import com.lenibonje.habari.domain.usecase.GetNewsHeadlinesUseCase
+import com.lenibonje.habari.domain.usecase.GetSearchedNewsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +17,12 @@ class UseCaseModule {
     @Provides
     fun provideNewsHeadLinesUseCase(newsRepository: NewsRepository): GetNewsHeadlinesUseCase{
         return GetNewsHeadlinesUseCase(newsRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetSearchedNewsUseCase(newsRepository: NewsRepository): GetSearchedNewsUseCase{
+        return GetSearchedNewsUseCase(newsRepository)
     }
 
 

@@ -6,8 +6,8 @@ import com.lenibonje.habari.domain.repository.NewsRepository
 
 class GetSearchedNewsUseCase(private val repository: NewsRepository) {
 
-    suspend fun execute(searchQuery: String): Resource<ApiResponse> =
-        repository.getSearchedNews(searchQuery)
+    suspend fun execute(country: String, searchQuery: String, page: Int): Resource<ApiResponse> =
+        repository.getSearchedNewsHeadlines(country, searchQuery, page)
 
 
 }

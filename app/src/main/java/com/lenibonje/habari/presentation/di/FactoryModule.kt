@@ -2,6 +2,7 @@ package com.lenibonje.habari.presentation.di
 
 import android.app.Application
 import com.lenibonje.habari.domain.usecase.GetNewsHeadlinesUseCase
+import com.lenibonje.habari.domain.usecase.GetSearchedNewsUseCase
 import com.lenibonje.habari.presentation.viewmodel.NewsViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -17,9 +18,10 @@ class FactoryModule {
     @Provides
     fun provideNewsViewModelFactory(
         application: Application,
-        getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase
+        getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
+        getSearchedNewsUseCase: GetSearchedNewsUseCase
     ): NewsViewModelFactory{
-        return NewsViewModelFactory(application, getNewsHeadlinesUseCase)
+        return NewsViewModelFactory(application, getNewsHeadlinesUseCase, getSearchedNewsUseCase)
     }
 
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -15,6 +16,9 @@ import com.lenibonje.habari.R
 import com.lenibonje.habari.data.util.Resource
 import com.lenibonje.habari.databinding.FragmentNewsBinding
 import com.lenibonje.habari.presentation.viewmodel.NewsViewModel
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -24,7 +28,8 @@ import com.lenibonje.habari.presentation.viewmodel.NewsViewModel
 class NewsFragment : Fragment() {
 
     private lateinit var viewModel: NewsViewModel
-    private lateinit var binding: FragmentNewsBinding
+    private var _binding: FragmentNewsBinding? = null
+    private val binding get() = _binding!!
     private lateinit var newsAdapter: NewsAdapter
     private var county = "us"
     private var page = 1
@@ -33,10 +38,10 @@ class NewsFragment : Fragment() {
     private var isLastPage = false
     private var pages = 0
 
-    private val onScrollListener = object: RecyclerView.OnScrollListener(){
+    private val onScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
             }
         }
@@ -50,7 +55,7 @@ class NewsFragment : Fragment() {
 
             val hasReachedToEnd = topPosition + visibleItems >= sizeOfCurrentList
             val shouldPaginate = !isLoading && !isLastPage && hasReachedToEnd && isScrolling
-            if (shouldPaginate){
+            if (shouldPaginate) {
                 page++
                 viewModel.getNewsHeadLines(county, page)
                 isScrolling = false
@@ -61,14 +66,13 @@ class NewsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news, container, false)
+    ): View {
+        _binding = FragmentNewsBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentNewsBinding.bind(view)
         viewModel = (activity as MainActivity).viewModel
         newsAdapter = (activity as MainActivity).adapter
         newsAdapter.setOnItemClickListener {
@@ -77,6 +81,7 @@ class NewsFragment : Fragment() {
         }
         initRecyclerView()
         viewNewsList()
+        setSearchedView()
     }
 
     private fun initRecyclerView() {
@@ -88,20 +93,20 @@ class NewsFragment : Fragment() {
 
     }
 
-    private fun showProgressBar(){
+    private fun showProgressBar() {
         isScrolling = true
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun hideProgressBar(){
+    private fun hideProgressBar() {
         isScrolling = false
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun viewNewsList(){
+    private fun viewNewsList() {
         viewModel.getNewsHeadLines(county, page)
-        viewModel.newsHeadLines.observe(viewLifecycleOwner){ response ->
-            when(response){
+        viewModel.newsHeadLines.observe(viewLifecycleOwner) { response ->
+            when (response) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let {
@@ -113,10 +118,10 @@ class NewsFragment : Fragment() {
                     hideProgressBar()
                     response.data?.let {
                         newsAdapter.differ.submitList(it.articles.toList())
-                        if (it.totalResults%20 == 0){
+                        if (it.totalResults % 20 == 0) {
                             pages = it.totalResults / 20
-                        }else{
-                            pages = it.totalResults / 20+1
+                        } else {
+                            pages = it.totalResults / 20 + 1
                         }
                         isLastPage = page == pages
                     }
@@ -126,4 +131,63 @@ class NewsFragment : Fragment() {
             }
         }
     }
+
+    private fun setSearchedView() {
+        binding.svNews.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.getSearchedNews(county, query.toString(), page)
+                viewSearchedNews()
+                return false
+
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                MainScope().launch {
+                    delay(2000)
+                    viewModel.getSearchedNews(county, newText.toString(), page)
+                    viewSearchedNews()
+                }
+                return false
+            }
+        })
+
+        binding.svNews.setOnCloseListener {
+            initRecyclerView()
+            viewNewsList()
+            false
+        }
+
+    }
+
+    private fun viewSearchedNews() {
+//        viewModel.getSearchedNews(county, page)
+        viewModel.searchedNews.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let {
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is Resource.Loading -> showProgressBar()
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let {
+                        newsAdapter.differ.submitList(it.articles.toList())
+                        if (it.totalResults % 20 == 0) {
+                            pages = it.totalResults / 20
+                        } else {
+                            pages = it.totalResults / 20 + 1
+                        }
+                        isLastPage = page == pages
+                    }
+
+
+                }
+            }
+        }
+    }
+
+    //search
+
 }
